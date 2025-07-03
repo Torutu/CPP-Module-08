@@ -20,33 +20,20 @@ $(OBJ_DIR):
 	@ mkdir -p $(OBJ_DIR)
 
 $(NAME): $(OBJ_DIR) $(OBJ)
-	@ echo -ne "$(MAGENTA)Making $(NAME)"
-	@ ( \
-        trap 'echo -e "$(RED)Interrupted by user $(RESET)"; exit 1' INT; \
-        $(CC) $(CFLAGS) -o $(NAME) $(OBJ) & \
-        PID=$$!; \
-        while kill -0 $$PID 2>/dev/null; do \
-            echo -n "."; \
-            sleep 0.4; \
-            echo -n "."; \
-            sleep 0.6; \
-            echo -n "."; \
-            sleep 0.4; \
-        done; \
-        wait $$PID; \
-    )
-	@ echo -ne "\n$(GREEN)Done!$(RED)\n"
+	@ echo -e "$(MAGENTA)Making $(NAME)...$(RESET)"
+	@ $(CC) $(CFLAGS) -o $(NAME) $(OBJ)
+	@ echo -e "$(GREEN)Done!$(RESET)"
 
-# Custom rule to ensure CC is used for compiling .cpp to .o and store in obj directory
+# Compile .cpp to .o in obj directory
 $(OBJ_DIR)/%.o: %.cpp
 	@ $(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@ echo -e "$(RED)Removing $(OBJ_DIR) $(RESET)"
+	@ echo -e "$(RED)Removing $(OBJ_DIR)$(RESET)"
 	@ rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@ echo -e "$(RED)Removing $(NAME) $(RESET)"
+	@ echo -e "$(RED)Removing $(NAME)$(RESET)"
 	@ rm -f $(NAME)
 
 re: fclean all

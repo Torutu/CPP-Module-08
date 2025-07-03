@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdexcept>
 #include <limits>
+#include <iostream>
 
 class Span {
 private:
